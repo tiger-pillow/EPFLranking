@@ -4,7 +4,8 @@ const Course = require('../schemas/courseSchema.js');
 
 router.post('/submitRating', function(req, res){
   const newCourse = new Course({
-    name: req.body.name
+    courseCode: req.body.course, 
+    profRating: req.body.prof,
   });
   newCourse.save()
   console.log("suceeded in submit rating");
