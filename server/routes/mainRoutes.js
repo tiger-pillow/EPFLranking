@@ -1,13 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const Course = require('../schemas/courseSchema.js'); 
+const Rating = require('../schemas/ratingSchema.js'); 
+
 
 router.post('/submitRating', function(req, res){
-  const newCourse = new Course({
-    courseCode: req.body.course, 
-    profRating: req.body.prof,
+  const newRating = new Rating({
+    courseCode: req.body.courseCode, 
+    courseRating: req.body.courseRating,
+    profRating: req.body.profRating,
+    difficulty: req.body.difficulty, 
+    workload: req.body.workload, 
+    comment: req.body.comment, 
+    studyTip: req.body.studyTip
   });
-  newCourse.save()
+  
+  newRating.save()
   console.log("suceeded in submit rating");
   res.sendStatus(200);
 })
