@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Container, Form} from "react-bootstrap";
+import {Toast} from 'bootstrap'
 import axios from 'axios';
 
 
@@ -14,8 +15,11 @@ function RatingForm() {
  
   /* Submit 1 rating for 1 course */
   const submitForm = async() => {
-    if (courseCode === "ZZZ" || courseRating === 0 || workload === 0 || profRating === 0 || difficulty === 0){
-      alert("please fill out all the bubbles");
+    if (courseRating === 0 || workload === 0 || profRating === 0 || difficulty === 0){
+      var toastLiveExample = document.getElementById('liveToast');
+      var toast = new Toast(toastLiveExample);
+      toast.show();
+
       return(false);
     }
     else {
@@ -57,13 +61,23 @@ function RatingForm() {
     <Container>
     <Form>
       <div className="mb-3">
-
         <label >Course Code</label>
         <div className="ml-3"> 
-          <input  type="coursecode" onChange={(event) => setCourseCode(event.target.value)} placeholder="XXX" value = {courseCode}/>
+          <input  type="coursecode" onChange={(event) => setCourseCode(event.target.value)} placeholder="CS-413" value = {courseCode} required/>
           {searchBarFilter()}
         </div>
+      </div>
 
+      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="..." class="rounded me-2" alt="..."/>
+            <strong class="me-auto">Bootstrap</strong>
+            <small class="text-muted">11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          Hello, world! This is a toast message.
+        </div>
       </div>
  
       <div className="row">
