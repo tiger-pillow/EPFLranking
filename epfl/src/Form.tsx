@@ -13,8 +13,6 @@ function RatingForm() {
   const [studyTip, setStudyTip] = useState("");
   
   let [infojoint, setInfo] = useState([])
-  // let infojoint: string[] = [];
-  // let infojoint: string[] = ['cs-413', 'cs-422', 'cs-442', 'fin-411', 'mgt-410', 'mgt-581'];
 
  useEffect(function findListInfo() { // only load once at the beginning 
     let infojointtemp: string[] = [];
@@ -28,7 +26,6 @@ function RatingForm() {
       })
       .then(()=>{setInfo(infojointtemp)})
   }, []);
-
   
 
   /* Submit 1 rating for 1 course */
