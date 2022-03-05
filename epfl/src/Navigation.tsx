@@ -14,6 +14,7 @@ function Navigation () {
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/form">Submit Rating</Nav.Link>
+              <Nav.Link href="/form2">Form 2</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="/cs">IN</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">MTE</NavDropdown.Item>
