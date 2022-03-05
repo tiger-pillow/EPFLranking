@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const Rating = require('../schemas/ratingSchema.js'); 
+const Rating = require('../schemas/ratingSchema.tsx'); 
 
 
 router.post('/submitRating', function(req, res){
+  console.log("submit rating triggered", req.body.courseCode, req.body.courseRating, req.body.difficulty);
   const newRating = new Rating({
     courseCode: req.body.courseCode, 
     courseRating: req.body.courseRating,

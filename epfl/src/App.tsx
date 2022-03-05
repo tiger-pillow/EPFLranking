@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navigation from './Navigation.js';
-import Home from './Home.js';
-import Form from './Form.js';
+import Navigation from './Navigation.tsx';
+import Home from './Home.tsx';
+import Form from './Form.tsx';
 
 function App() {
   return (

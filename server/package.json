@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "devstart": "nodemon server.js",
+    "server": "nodemon server.js --ignore client --ignore \"**/scripts/**\"",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "npm run start"
   },
   "keywords": [],
   "author": "",

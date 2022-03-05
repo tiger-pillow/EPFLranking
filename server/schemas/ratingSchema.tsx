@@ -12,4 +12,4 @@ const ratingSchema = new mongoose.Schema({
   time_added: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("rating", ratingSchema);
+module.exports = mongoose.model("Rating", ratingSchema);
