@@ -42,8 +42,9 @@ function RatingForm() {
     return (
       <div>
         {codes.map((code: string) => {
-          if (code.includes(courseCode.toLowerCase())&& courseCode !== "") {
-            return <div>{code}</div>
+          if (courseCode !== "" && code.includes(courseCode.toLowerCase()) && !codes.includes(courseCode)) {
+            return (
+              <div onClick={() => {setCourseCode(code)}}> {code} </div>)
           }
         })}
       </div>
@@ -59,12 +60,12 @@ function RatingForm() {
 
         <label >Course Code</label>
         <div className="ml-3"> 
-          <input  type="coursecode" onChange={(event) => setCourseCode(event.target.value)} placeholder="CS-422"/>
+          <input  type="coursecode" onChange={(event) => setCourseCode(event.target.value)} placeholder="XXX" value = {courseCode}/>
           {searchBarFilter()}
         </div>
 
       </div>
-
+ 
       <div className="row">
         <label > How is the Course?  </label><br></br>
         <div className="form-check col-1">
