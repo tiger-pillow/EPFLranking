@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Container, Form} from "react-bootstrap";
-import {Toast} from 'bootstrap'
 import axios from 'axios';
 
 
@@ -12,17 +11,29 @@ function RatingForm() {
   const [difficulty, setDifficulty] = useState(0);
   const [comment, setComment] = useState("");
   const [studyTip, setStudyTip] = useState("");
- 
+  
+  // let [infojoint, setInfo] = useState([])
+  let infojoint: string[] = [];
+  // let infojoint: string[] = ['cs-413', 'cs-422', 'cs-442', 'fin-411', 'mgt-410', 'mgt-581'];
+
+ useEffect(function findListInfo() { // only load once at the beginning 
+    let infojoint: string[] = ['cs-413', 'cs-422', 'cs-442', 'fin-411', 'mgt-410', 'mgt-581'];
+    axios.get('http://localhost:4000/getAllCourses')
+      .then((response)=>{
+        response.data.map((res) => { 
+          let tempstring: string[] = [res.courseCode, res.courseName, res.courseProf];
+          console.log("temp string is", tempstring.join())
+          infojoint.push(tempstring.join(' '));
+          })
+      })
+      .then(()=>{console.log("info joint is", infojoint)})
+
+  }, []);
+
+  
+
   /* Submit 1 rating for 1 course */
   const submitForm = async() => {
-    if (courseRating === 0 || workload === 0 || profRating === 0 || difficulty === 0){
-      var toastLiveExample = document.getElementById('liveToast');
-      var toast = new Toast(toastLiveExample);
-      toast.show();
-
-      return(false);
-    }
-    else {
       await axios.post('http://localhost:4000/submitRating', {
         courseCode: courseCode,
         courseRating: courseRating,
@@ -36,19 +47,17 @@ function RatingForm() {
           console.log("ERR in new submit form")
         })
     }
-  }
-
+  
   /* Search Bar with Filtering Abilities */
-  const codes: string[] = ['cs-413', 'cs-422', 'cs-442', 'computational photography','fin-411','mgt-410',
-  'mgt-581'];
 
   function searchBarFilter() {
     return (
       <div>
-        {codes.map((code: string) => {
-          if (courseCode !== "" && code.includes(courseCode.toLowerCase()) && !codes.includes(courseCode)) {
+        {console.log("inside search bar filter, info joint is", infojoint)}
+        {infojoint.map((info: string) => {
+          if (courseCode !== "" && info.includes(courseCode.toLowerCase()) && !infojoint.includes(courseCode)) {
             return (
-              <div onClick={() => {setCourseCode(code)}}> {code} </div>)
+              <div onClick={() => {setCourseCode(info)}}> {info} </div>)
           }
         })}
       </div>
@@ -68,39 +77,27 @@ function RatingForm() {
         </div>
       </div>
 
-      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-          <img src="..." class="rounded me-2" alt="..."/>
-            <strong class="me-auto">Bootstrap</strong>
-            <small class="text-muted">11 mins ago</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          Hello, world! This is a toast message.
-        </div>
-      </div>
- 
       <div className="row">
         <label > How is the Course?  </label><br></br>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={courseRating === 1} onClick={() => setCourseRating(1)} />
-          <label className="form-check-label" for="flexRadioDefault1">Terrible</label>
+          <input className="form-check-input" name="courserating" type="radio" checked={courseRating === 1} onClick={() => setCourseRating(1)} required/>
+          <label className="form-check-label" >Terrible</label>
         </div>
         <div className="form-check col-1 ">
-          <input className="form-check-input" type="radio" checked={courseRating === 2} onClick={() => setCourseRating(2)} />
-          <label className="form-check-label" for="flexRadioDefault2">Bad</label>
+            <input className="form-check-input" name="courserating" type="radio" checked={courseRating === 2} onClick={() => setCourseRating(2)} />
+          <label className="form-check-label" >Bad</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={courseRating === 3} onClick={() => setCourseRating(3)} />
-          <label className="form-check-label" for="flexRadioDefault1">Medium</label>
+            <input className="form-check-input" name="courserating" type="radio" checked={courseRating === 3} onClick={() => setCourseRating(3)} />
+          <label className="form-check-label" >Medium</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={courseRating === 4} onClick={() => setCourseRating(4)} />
-          <label className="form-check-label" for="flexRadioDefault1">Good</label>
+            <input className="form-check-input" name="courserating" type="radio" checked={courseRating === 4} onClick={() => setCourseRating(4)} />
+          <label className="form-check-label" >Good</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={courseRating === 3} onClick={() => setCourseRating(3)} />
-          <label className="form-check-label" for="flexRadioDefault1">Excellent</label>
+            <input className="form-check-input" name="courserating" type="radio" checked={courseRating === 3} onClick={() => setCourseRating(3)} />
+          <label className="form-check-label"> Excellent</label>
         </div>
       </div>
 
@@ -108,24 +105,24 @@ function RatingForm() {
       <div className = "row" >
         <label > How is the professor? (clairty, organization, accessibility) </label><br></br>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={profRating === 1} onClick={() => setProfRating(1)} />
-            <label className="form-check-label" for="flexRadioDefault1">Terrible</label>
+            <input className="form-check-input" name="profrating" type="radio" checked={profRating === 1} onClick={() => setProfRating(1)} required />
+            <label className="form-check-label">Terrible</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={profRating === 2} onClick={() => setProfRating(2)} />
-            <label className="form-check-label" for="flexRadioDefault2">Bad</label>
+            <input className="form-check-input" name="profrating" type="radio" checked={profRating === 2} onClick={() => setProfRating(2)} />
+            <label className="form-check-label">Bad</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={profRating === 3} onClick={() => setProfRating(3)} />
-          <label className="form-check-label" for="flexRadioDefault1">Medium</label>
+            <input className="form-check-input" name="profrating" type="radio" checked={profRating === 3} onClick={() => setProfRating(3)} />
+          <label className="form-check-label">Medium</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={profRating === 4} onClick={() => setProfRating(4)} />
-          <label className="form-check-label" for="flexRadioDefault1">Good</label>
+            <input className="form-check-input" name="profrating" type="radio" checked={profRating === 4} onClick={() => setProfRating(4)} />
+          <label className="form-check-label" >Good</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={profRating === 5} onClick={() => setProfRating(5)} />
-          <label className="form-check-label" for="flexRadioDefault1">Excellent</label>
+            <input className="form-check-input" name="profrating" type="radio" checked={profRating === 5} onClick={() => setProfRating(5)} />
+          <label className="form-check-label" >Excellent</label>
         </div>
 
 
@@ -134,24 +131,24 @@ function RatingForm() {
       <div className="row" >
         <label > Difficulty? </label><br></br>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={difficulty === 1} onClick={() => setDifficulty(1)} />
-          <label className="form-check-label" for="flexRadioDefault1">Very Easy</label>
+          <input className="form-check-input" name="difffrating" type="radio" checked={difficulty === 1} onClick={() => setDifficulty(1)} required/>
+          <label className="form-check-label">Very Easy</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={difficulty === 2} onClick={() => setDifficulty(2)} />
-          <label className="form-check-label" for="flexRadioDefault1">Easy</label>
+            <input className="form-check-input" name="difffrating" type="radio" checked={difficulty === 2} onClick={() => setDifficulty(2)} />
+          <label className="form-check-label">Easy</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={difficulty === 3} onClick={() => setDifficulty(3)} />
-          <label className="form-check-label" for="flexRadioDefault1">Medium</label>
+            <input className="form-check-input" name="difffrating" type="radio" checked={difficulty === 3} onClick={() => setDifficulty(3)} />
+          <label className="form-check-label">Medium</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={difficulty === 4} onClick={() => setDifficulty(4)} />
-          <label className="form-check-label" for="flexRadioDefault2">Hard</label>
+            <input className="form-check-input" name="difffrating" type="radio" checked={difficulty === 4} onClick={() => setDifficulty(4)} />
+          <label className="form-check-label">Hard</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={difficulty === 5} onClick={() => setDifficulty(5)} />
-          <label className="form-check-label" for="flexRadioDefault1">Very Hard</label>
+            <input className="form-check-input" name="difffrating" type="radio" checked={difficulty === 5} onClick={() => setDifficulty(5)} />
+          <label className="form-check-label">Very Hard</label>
         </div>
       </div>
 
@@ -159,24 +156,24 @@ function RatingForm() {
       <div className="row" >
         <label > Workload (considering the credit worth) </label><br></br>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={workload === 1} onClick={() => setWorkload(1)} />
-          <label className="form-check-label" for="flexRadioDefault1">Very Light</label>
+          <input className="form-check-input" name="workloadrating" type="radio" checked={workload === 1} onClick={() => setWorkload(1)} required/>
+          <label className="form-check-label" >Very Light</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={workload === 2} onClick={() => setWorkload(2)} />
-          <label className="form-check-label" for="flexRadioDefault2">Light</label>
+            <input className="form-check-input" name="workloadrating" type="radio" checked={workload === 2} onClick={() => setWorkload(2)} />
+          <label className="form-check-label" >Light</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={workload === 3} onClick={() => setWorkload(3)} />
-          <label className="form-check-label" for="flexRadioDefault1">Medium</label>
+            <input className="form-check-input" name="workloadrating" type="radio" checked={workload === 3} onClick={() => setWorkload(3)} />
+          <label className="form-check-label" >Medium</label>
         </div>
         <div className="form-check col-1">
-          <input className="form-check-input" type="radio" checked={workload === 4} onClick={() => setWorkload(4)} />
-          <label className="form-check-label" for="flexRadioDefault1">Heavy</label>
+            <input className="form-check-input" name="workloadrating" type="radio" checked={workload === 4} onClick={() => setWorkload(4)} />
+          <label className="form-check-label" >Heavy</label>
         </div>
         <div className="form-check col-2">
-          <input className="form-check-input" type="radio" checked={workload === 5} onClick={() => setWorkload(5)} />
-          <label className="form-check-label" for="flexRadioDefault1">Very Heavy</label>
+            <input className="form-check-input" name="workloadrating" type="radio" checked={workload === 5} onClick={() => setWorkload(5)} />
+          <label className="form-check-label" >Very Heavy</label>
         </div>
       </div>
 

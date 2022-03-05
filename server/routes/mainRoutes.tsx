@@ -1,10 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const Rating = require('../schemas/ratingSchema.tsx'); 
+const Course = require('../schemas/courseSchema.tsx');
 
+router.get('/getRatings', function(req, res){
+  Rating.find({})
+    .then((ratings)=>{
+      res.end(JSON.stringify(ratings));
+    })
+})
+
+router.get('/getAllCourses', function(req, res){
+  Course.find({})
+    .then((courses)=>{
+      res.end(JSON.stringify(courses));
+    })
+})
 
 router.post('/submitRating', function(req, res){
-  console.log("submit rating triggered", req.body.courseCode, req.body.courseRating, req.body.difficulty);
   const newRating = new Rating({
     courseCode: req.body.courseCode, 
     courseRating: req.body.courseRating,
