@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Container, Form} from "react-bootstrap";
+import {Container, Form, ToggleButton, ToggleButtonGroup, ButtonGroup} from "react-bootstrap";
 import axios from 'axios';
 
 function RatingForm() {
@@ -44,7 +44,6 @@ function RatingForm() {
     }
   
   /* Search Bar with Filtering Abilities */
-
   function searchBarFilter() {
     return (
       <div>
@@ -57,13 +56,63 @@ function RatingForm() {
       </div>
     )
   }
-
   useEffect(()=>{searchBarFilter()}, [courseCode]); 
+
+  /* toggle radio button group */
+  function ToggleButtonExample() {
+    const [radioValue, setRadioValue] = useState('1');
+
+    const radios = [
+      { name: 'Terrible', value: '1' },
+      { name: 'Bad', value: '2' },
+      { name: 'Meh', value: '3' },
+      { name: 'Good', value: '4' },
+      { name: 'Excellent', value: '5' },
+    ];
+
+    return (
+      <>
+        <ButtonGroup className="mb-2">
+          {radios.map((radio, idx) => (
+            <ToggleButton
+              key={idx}
+              id={`radio-${idx}`}
+              type="radio"
+              variant="secondary"
+              name="radio"
+              value={radio.value}
+              checked={radioValue === radio.value}
+              onChange={(e) => setRadioValue(e.currentTarget.value)}
+            >
+              {radio.name}
+            </ToggleButton>
+          ))}
+        </ButtonGroup>
+        <br />
+        <ButtonGroup>
+          {radios.map((radio, idx) => (
+            <ToggleButton
+              key={idx}
+              id={`radio-${idx}`}
+              type="radio"
+              variant={idx % 2 ? 'outline-success' : 'outline-danger'}
+              name="radio"
+              value={radio.value}
+              checked={radioValue === radio.value}
+              onChange={(e) => setRadioValue(e.currentTarget.value)}
+            >
+              {radio.name}
+            </ToggleButton>
+          ))}
+        </ButtonGroup>
+      </>
+    );
+  }
+
 
   return (
     <Container>
     <Form>
-
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label> Which Class? </Form.Label>
           <Form.Control type="email" placeholder="CS-222" value = {courseCode} onChange={(event) => setCourseCode(event.target.value)}/>
@@ -72,6 +121,9 @@ function RatingForm() {
           you can search by course code, name or professor 
         </Form.Text>
       </Form.Group>
+
+      {ToggleButtonExample()}
+
 
       <div className="row">
         <label > How is the Course?  </label><br></br>
