@@ -12,22 +12,21 @@ function RatingForm() {
   const [comment, setComment] = useState("");
   const [studyTip, setStudyTip] = useState("");
   
-  // let [infojoint, setInfo] = useState([])
-  let infojoint: string[] = [];
+  let [infojoint, setInfo] = useState([])
+  // let infojoint: string[] = [];
   // let infojoint: string[] = ['cs-413', 'cs-422', 'cs-442', 'fin-411', 'mgt-410', 'mgt-581'];
 
  useEffect(function findListInfo() { // only load once at the beginning 
-    let infojoint: string[] = ['cs-413', 'cs-422', 'cs-442', 'fin-411', 'mgt-410', 'mgt-581'];
+    let infojointtemp: string[] = [];
     axios.get('http://localhost:4000/getAllCourses')
       .then((response)=>{
         response.data.map((res) => { 
-          let tempstring: string[] = [res.courseCode, res.courseName, res.courseProf];
+          let tempstring: string[] = [res.courseCode, res.courseName, res.courseProf.toLowerCase()];
           console.log("temp string is", tempstring.join())
-          infojoint.push(tempstring.join(' '));
+          infojointtemp.push(tempstring.join(' '));
           })
       })
-      .then(()=>{console.log("info joint is", infojoint)})
-
+      .then(()=>{setInfo(infojointtemp)})
   }, []);
 
   
@@ -53,7 +52,6 @@ function RatingForm() {
   function searchBarFilter() {
     return (
       <div>
-        {console.log("inside search bar filter, info joint is", infojoint)}
         {infojoint.map((info: string) => {
           if (courseCode !== "" && info.includes(courseCode.toLowerCase()) && !infojoint.includes(courseCode)) {
             return (
