@@ -29,7 +29,7 @@ router.post('/submitRating', function(req, res){
   });
   
   newRating.save()
-  console.log("suceeded in submit rating");
+  console.log("suceeded in submit rating", req.body.courseRating);
   res.sendStatus(200);
 })
 

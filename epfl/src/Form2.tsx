@@ -29,6 +29,7 @@ function RatingForm() {
 
   /* Submit 1 rating for 1 course */
   const submitForm = async() => {
+      
       await axios.post('http://localhost:4000/submitRating', {
         courseCode: courseCode,
         courseRating: courseRating,
@@ -63,32 +64,15 @@ function RatingForm() {
     const [radioValue, setRadioValue] = useState('1');
 
     const radios = [
-      { name: 'Terrible', value: '1' },
-      { name: 'Bad', value: '2' },
-      { name: 'Meh', value: '3' },
-      { name: 'Good', value: '4' },
-      { name: 'Excellent', value: '5' },
+      { name: 'Terrible', value: 1},
+      { name: 'Bad', value: 2 },
+      { name: 'Meh', value: 3 },
+      { name: 'Good', value: 4 },
+      { name: 'Excellent', value: 5 },
     ];
 
     return (
       <>
-        <ButtonGroup className="mb-2">
-          {radios.map((radio, idx) => (
-            <ToggleButton
-              key={idx}
-              id={`radio-${idx}`}
-              type="radio"
-              variant="secondary"
-              name="radio"
-              value={radio.value}
-              checked={radioValue === radio.value}
-              onChange={(e) => setRadioValue(e.currentTarget.value)}
-            >
-              {radio.name}
-            </ToggleButton>
-          ))}
-        </ButtonGroup>
-        <br />
         <ButtonGroup>
           {radios.map((radio, idx) => (
             <ToggleButton
@@ -98,8 +82,8 @@ function RatingForm() {
               variant={idx % 2 ? 'outline-success' : 'outline-danger'}
               name="radio"
               value={radio.value}
-              checked={radioValue === radio.value}
-              onChange={(e) => setRadioValue(e.currentTarget.value)}
+              checked={courseRating === radio.value}
+              onChange={(e) => setCourseRating(e.currentTarget.value)}
             >
               {radio.name}
             </ToggleButton>
@@ -115,7 +99,7 @@ function RatingForm() {
     <Form>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label> Which Class? </Form.Label>
-          <Form.Control type="email" placeholder="CS-222" value = {courseCode} onChange={(event) => setCourseCode(event.target.value)}/>
+          <Form.Control placeholder="CS-222" value = {courseCode} onChange={(event) => setCourseCode(event.target.value)}/>
           {searchBarFilter()}
         <Form.Text className="text-muted">
           you can search by course code, name or professor 
